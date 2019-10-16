@@ -27,27 +27,6 @@ namespace var_temps {
         return first - (args + ...);
     }
 
-    template <typename T>
-    void log(T val)
-    {
-       std::cout<<val<<" ";
-    }
-    template <typename T,typename... U>
-    void log(T val, U ... args)
-    {
-       std::cout<<val<< " ";
-       log(args...);
-       std::cout<<std::endl;
-    }
-    template <typename... T>
-    void logFold(T ... val)
-    {
-       (std::cout<< ... <<(val))<<'\n';
-    }
-    template<typename T, typename... Args>
-    void push_back_vec(std::vector<T>& v, Args&&... args)
-    {
-        (v.push_back(args), ...);
-    }
+
 
 }
