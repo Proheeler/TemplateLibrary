@@ -27,6 +27,25 @@ namespace var_temps {
         return first - (args + ...);
     }
 
+    template<typename T, typename... Args>
+    T plus(T first, Args... args)
+    {
+        return first + (args + ...);
+    }
+
+
+    template<typename ... Args>
+    auto multiply(Args ... args)
+    {
+        return (args * ...);
+    }
+
+//    template<typename T, typename... Args>
+//    auto divide(T first,Args ... args)
+//    {
+//        return ((first/(args...)));
+//    }
+
 
 
 }
