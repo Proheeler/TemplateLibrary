@@ -19,7 +19,8 @@ namespace var_temps {
     template <typename... T>
     void logFold(T ... val)
     {
-       (std::cout<< ... <<(val))<<'\n';
+       ((std::cout<<(val)<<" "),...);
+        std::cout<<std::endl;
     }
 
 }
