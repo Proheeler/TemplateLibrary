@@ -49,6 +49,10 @@ public:
             tmp.vect.at(i)= vect[i+1]*v.vect[i+2]-vect[i+2]*v.vect[i+1];
         return tmp;
     }
+    auto MixedVectorProduct(Vector const &v_,Vector const &v) const
+    {
+
+    }
     std::vector<T> getVect() const
     {
         return vect;
