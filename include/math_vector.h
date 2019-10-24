@@ -2,7 +2,7 @@
 #include <vector>
 #include <stdexcept>
 #include <cassert>
-#include "matrice.h"
+#include "matrix.h"
 namespace va_temps
 {
 template <typename T>
@@ -70,6 +70,16 @@ public:
             }
         }
         tmp.setVect(tmp_vector);
+        return tmp;
+    }
+    auto Multiply(T const & value) const
+    {
+        Vector tmp(*this);
+        for(size_t index=0;index<vect.size();++index)
+        {
+            tmp.vect.at(index) =value*vect.at(index);
+        }
+
         return tmp;
     }
     std::vector<T> getVect() const

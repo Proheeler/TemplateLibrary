@@ -17,9 +17,10 @@ class Matrix
 {
 public:
     Matrix():rows_(0),cols_(0),data_(std::vector<T>()){}
+    Matrix(std::size_t rows,std::size_t cols):rows_(rows),cols_(cols),data_(std::vector<T>()){}
     Matrix(T* pointer,std::size_t rows,std::size_t cols):rows_(rows),cols_(cols),data_(std::vector<T>(pointer,pointer+rows*cols)){}
     Matrix(std::initializer_list<T> data,std::size_t rows,std::size_t cols):rows_(rows),cols_(cols),data_(std::vector<T>(data)) {}
-    void Print()
+    void Print() const
     {
         for(size_t row=0;row<rows_;++row)
         {
@@ -30,7 +31,7 @@ public:
             std::cout<<endl;
         }
     }
-    auto Add(Matrix const & m)
+    auto Add(Matrix const & m) const
     {
         Matrix tmp(*this);
         for(size_t i=0;i<rows_*cols_;++i)
@@ -40,7 +41,7 @@ public:
         return tmp;
     }
 
-    auto Substract(Matrix const & m)
+    auto Substract(Matrix const & m) const
     {
         Matrix tmp(*this);
         for(size_t i=0;i<rows_*cols_;++i)
@@ -109,6 +110,24 @@ public:
         }
         return tmp;
     }
+    auto getSubMatrix(size_t const & row_start,size_t const & row_end,
+                      size_t const & col_start,size_t const& col_end) const
+    {
+        assert(row_end<rows_ && col_end<cols_ && row_start>=0 && col_start>=0);
+        size_t tmp_rows=row_end-row_start+1,tmp_cols =col_end-col_start+1;
+        Matrix tmp(tmp_rows,tmp_cols);
+        tmp.data_.resize(tmp_rows*tmp_cols);
+        int index=0;
+        for(size_t row=row_start;row<=row_end;++row)
+        {
+            for(size_t col=col_start;col<=col_end;++col)
+            {
+                tmp.data_.at(index)=data_.at(col+row*cols_);
+                ++index;
+            }
+        }
+        return tmp;
+    }
 
 
     std::size_t getRows() const
@@ -126,11 +145,18 @@ public:
         return data_;
     }
 
+    void setData(const std::vector<T> &data)
+    {
+        data_ = data;
+    }
+
 private:
     std::size_t rows_;
     std::size_t cols_;
     std::vector<T> data_;
 };
+
+
 
 
 
