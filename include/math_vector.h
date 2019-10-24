@@ -2,6 +2,7 @@
 #include <vector>
 #include <stdexcept>
 #include <cassert>
+#include "matrice.h"
 namespace va_temps
 {
 template <typename T>
@@ -54,11 +55,28 @@ public:
     {
 
     }
+    auto Multiply(Matrix<T> const & mat) const
+    {
+        assert(vect.size()==mat.getCols());
+        Vector<T> tmp{};
+        std::vector<T> tmp_vector;
+        tmp_vector.resize(vect.size());
+
+        for(size_t row=0;row<mat.getRows();++row)
+        {
+            for(size_t col=0;col<mat.getCols();++col)
+            {
+                tmp_vector.at(row)+=mat.getData().at(col+mat.getCols()*row)*vect.at(col);
+            }
+        }
+        tmp.setVect(tmp_vector);
+        return tmp;
+    }
     std::vector<T> getVect() const
     {
         return vect;
     }
-    void Print()
+    void Print() const
     {
         for(auto &i:vect)
             cout<<i<<" ";

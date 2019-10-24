@@ -1,8 +1,17 @@
+#pragma once
 #include <cstdint>
 #include <vector>
 #include <cassert>
-#include "math_vector.h"
+
 namespace va_temps {
+
+template <typename T>
+class Vector;
+
+
+
+
+
 template <typename T>
 class Matrix
 {
@@ -40,7 +49,7 @@ public:
         }
         return tmp;
     }
-    auto Multiply(Matrix const & m)
+    auto Multiply(Matrix const & m) const
     {
         assert(this->cols_ == m.getRows());
         Matrix tmp(*this);
@@ -59,8 +68,7 @@ public:
         tmp.cols_=m.getRows();
         return tmp;
     }
-    template <typename U>
-    auto Multiply(U const & value)
+    auto Multiply(T const & value) const
     {
         Matrix tmp(*this);
         for(size_t row=0;row<rows_;++row)
@@ -72,7 +80,7 @@ public:
         }
         return tmp;
     }
-    auto Multiply(Vector<T> const & vect)
+    auto Multiply(Vector<T> const & vect) const
     {
         assert(rows_==vect.getVect().size());
         Vector<T> tmp{};
@@ -89,7 +97,7 @@ public:
         return tmp;
     }
 
-    auto Transpose()
+    auto Transpose() const
     {
         Matrix tmp(*this);
         for(size_t row=0;row<rows_;++row)
