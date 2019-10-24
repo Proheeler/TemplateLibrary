@@ -4,12 +4,13 @@
 #include <cassert>
 namespace va_temps
 {
-template <typename T,int size=2>
-class Vector{
+template <typename T>
+class Vector
+{
 public:
     explicit Vector(std::initializer_list<T> data)
     {
-        vect=(data.size()==size)?std::vector(data):std::vector(size,0);
+        vect=std::vector(data);
     }
     auto Add(Vector const &v) const
     {
@@ -57,10 +58,22 @@ public:
     {
         return vect;
     }
+    void Print()
+    {
+        for(auto &i:vect)
+            cout<<i<<" ";
+        cout<<endl;
+    }
+
+    void setVect(const std::vector<T> &value)
+    {
+        vect = value;
+    }
 
 private:
     std::vector<T> vect;
 };
+
 
 
 
