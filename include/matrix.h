@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <vector>
 #include <cassert>
-
+#include <math.h>
 namespace va_temps {
 
 template <typename T>
@@ -128,8 +128,6 @@ public:
         }
         return tmp;
     }
-
-
     std::size_t getRows() const
     {
         return rows_;
@@ -149,11 +147,11 @@ public:
     {
         data_ = data;
     }
-
+    std::vector<T> data_;
 private:
     std::size_t rows_;
     std::size_t cols_;
-    std::vector<T> data_;
+
 };
 
 
