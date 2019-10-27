@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <vector>
 #include <cassert>
+
 #include <math.h>
 namespace va_temps {
 
@@ -95,6 +96,19 @@ public:
             }
         }
         tmp.setVect(tmp_vector);
+        return tmp;
+    }
+    auto Divide(T const & value) const
+    {
+        Matrix<T> tmp(rows_,cols_);
+        tmp.data_.resize(rows_*cols_);
+        for(size_t row=0;row<rows_;++row)
+        {
+            for(size_t col=0;col<cols_;++col)
+            {
+                tmp.data_.at(col+cols_*row) =data_.at(col+cols_*row)/value;
+            }
+        }
         return tmp;
     }
 

@@ -1,24 +1,23 @@
 #pragma once
 #include <algorithm>
+#include <type_traits>
 #include "matrix.h"
 namespace va_temps {
-// Получение матрицы без i-й строки и j-го столбца
+
 template <typename T>
-Matrix<T> GetMatr(Matrix<T> const & mat,int i, int j) {
+Matrix<T> CoFractor(Matrix<T> const & mat,size_t i, size_t j) {
     auto data = mat.getData();
     Matrix<T> t(mat.getRows()-1,mat.getRows()-1);
     t.data_.resize((mat.getRows()-1)*(mat.getRows()-1));
-    for(int ki=0;ki<mat.getRows();++ki){
-//        if(ki==i) data.at(ki)=-99999;
-        for(int kj=0;kj<mat.getRows();++kj)
+    for(size_t ki=0;ki<mat.getRows();++ki){
+        for(size_t kj=0;kj<mat.getRows();++kj)
         {
             if(kj==j) data.at(kj+ki*mat.getRows())=-99999;
-//            if(ki==i)data.at(ki+kj*mat.getRows())=-99999;
         }
     }
-        for(int ki=0;ki<mat.getRows();++ki){
-            data.at(ki+i*mat.getRows())=-99999;
-        }
+    for(size_t ki=0;ki<mat.getRows();++ki){
+        data.at(ki+i*mat.getRows())=-99999;
+    }
 
     data.erase(std::remove_if(data.begin(),data.end(),[](auto i){return i==-99999;}),data.end());
     t.setData(data);
@@ -44,11 +43,35 @@ auto Det(Matrix<T> const & mat,int rank)
     {
         int k=1;
         for (int i = 0; i<rows_; i++) {
-            auto p = GetMatr(mat,0,i);
+            auto p = CoFractor(mat,0,i);
             d = d + k * mat.getData().at(i)* Det(p, rank-1);
             k = -k;
         }
         return d;
     }
+}
+template <typename T>
+Matrix<T> AdjugateMatrix(Matrix<T> const & mat)
+{
+    Matrix<T> retMat(mat);
+    int k=1;
+    for(size_t ki=0;ki<mat.getRows();++ki){
+        for(size_t kj=0;kj<mat.getCols();++kj)
+        {
+            auto cofactor = CoFractor(mat,ki,kj);
+            retMat.data_.at(ki+kj*mat.getRows())=k*Det(cofactor,cofactor.getRows());
+            k=-k;
+        }
+    }
+    return retMat;
+
+}
+
+template <typename T>
+auto InverseMatrix(Matrix<T> const & mat)
+{
+    auto det = Det(mat,mat.getRows());
+    auto adjMat = AdjugateMatrix(mat);
+    return adjMat.Divide(det);
 }
 }
