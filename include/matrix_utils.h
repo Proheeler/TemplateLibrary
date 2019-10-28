@@ -38,8 +38,7 @@ auto Det(Matrix<T> const & mat,int rank)
         throw std::exception();
     if(rows_==1)
         return mat.getData().at(0);
-    if (rows_ == 2) return ((mat.getData()[0] * mat.getData()[3])
-                            - (mat.getData()[1] * mat.getData()[2]));
+    if (rows_ == 2) return ((mat.getData()[0] * mat.getData()[3])- (mat.getData()[1] * mat.getData()[2]));
     else
     {
         int k=1;

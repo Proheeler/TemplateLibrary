@@ -2,6 +2,7 @@
 #include <vector>
 #include <stdexcept>
 #include <cassert>
+#include <algorithm>
 #include "matrix.h"
 namespace va_temps
 {
@@ -51,8 +52,16 @@ public:
             tmp.vect.at(i)= vect[i+1]*v.vect[i+2]-vect[i+2]*v.vect[i+1];
         return tmp;
     }
-    auto MixedVectorProduct(Vector const &v_,Vector const &v) const
+    auto MixedVectorProduct(Vector const &v_dot,Vector const &v_cross) const
     {
+        assert(vect.size() == v_dot.vect.size() && vect.size() == v_cross.vect.size());
+        Matrix<T> mat(vect.size(),vect.size());
+        std::vector<T> tmp;
+//        std::copy(tmp.begin(),tmp.end(),std::back_inserter(vect));
+//        std::copy(tmp.begin(),tmp.end(),std::back_inserter(v_dot.vect));
+//        std::copy(tmp.begin(),tmp.end(),std::back_inserter(v_cross.vect));
+        mat.setData(tmp);
+        return Det(mat,mat.getRows());
 
     }
     auto Multiply(Matrix<T> const & mat) const
