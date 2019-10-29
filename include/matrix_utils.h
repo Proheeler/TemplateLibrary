@@ -2,10 +2,11 @@
 #include <algorithm>
 #include <type_traits>
 #include "matrix.h"
-namespace va_temps {
+namespace var_temps {
 
 template <typename T>
 Matrix<T> CoFractor(Matrix<T> const & mat,size_t i, size_t j) {
+    assert(mat.getCols()==mat.getRows());
     auto data = mat.getData();
     Matrix<T> t(mat.getRows()-1,mat.getRows()-1);
     t.data_.resize((mat.getRows()-1)*(mat.getRows()-1));

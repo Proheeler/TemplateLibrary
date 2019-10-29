@@ -4,13 +4,10 @@
 #include <cassert>
 
 #include <math.h>
-namespace va_temps {
+namespace var_temps {
 
 template <typename T>
 class Vector;
-
-
-
 
 
 template <typename T>
