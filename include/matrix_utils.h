@@ -74,62 +74,41 @@ auto InverseMatrix(Matrix<T> const & mat)
     return AdjugateMatrix(mat).Divide(Det(mat,mat.getRows()));
 }
 
-//template <typename T,typename Accumulator>
-//void ApplyKernel(Matrix<T*> const & mat ,Matrix<T> const & kernel,Accumulator acc)
-//{
-//    size_t sizeKernel = kernel.getRows()*kernel.getCols();
-//    size_t sizeMat = mat.getRows()*mat.getCols();
-//    auto data=mat.getData();
-//    assert(mat.getRows()> kernel.getRows() && mat.getCols()>kernel.getCols());
-//    if(sizeKernel==1)
-//    {
-//        auto kern = kernel.getData();
-//        for(size_t i=0;i<sizeMat;++i)
-//        {
+template <typename T>
+void ApplyKernel(Matrix<T*> const & mat ,Matrix<T> const & kernel)
+{
+    size_t sizeKernel = kernel.getRows()*kernel.getCols();
+    size_t sizeMat = mat.getRows()*mat.getCols();
+    auto data=mat.getData();
+    auto kern = kernel.getData();
+    assert(mat.getRows()>= kernel.getRows() && mat.getCols()>=kernel.getCols());
+    assert(kernel.getRows() %2!=0 && kernel.getCols() %2!=0);
+    if(sizeKernel==1)
+    {
+        for(size_t i=0;i<sizeMat;++i)
+        {
+            *data[i]+=(*data[i]*kern[0]);
+        }
+    }
+    else if(sizeKernel>1)
+    {
+        for(size_t ki=1;ki<mat.getRows()-1;++ki){
+            for(size_t kj=1;kj<mat.getCols()-1;++kj)
+            {
+                auto sub = mat.getSubMatrix(ki-1,ki+kernel.getRows()-2,kj-1,kj+kernel.getCols()-2);
+                auto dataSub = sub.getData();
+                *data[ki+kj*mat.getRows()]=0;
+                for(size_t i=0;i<sub.getRows();++i){
+                    for(size_t j=0;j<sub.getCols();++j)
+                    {
+                        *data[ki+kj*mat.getRows()]+=(*dataSub[i+j*sub.getRows()]) *kern.at(i+j*sub.getRows());
+                    }
+                }
+            }
+        }
 
-//            *data[i]=acc(*data[i],kern[0]);
-//        }
-//    }
-//    else if(sizeKernel>1)
-//    {
-
-//    }
-//}
-//template <typename T>
-//void ApplyKernel(Matrix<T*> const & mat ,Matrix<T> const & kernel)
-//{
-//    size_t sizeKernel = kernel.getRows()*kernel.getCols();
-//    size_t sizeMat = mat.getRows()*mat.getCols();
-//    auto data=mat.getData();
-//    auto kern = kernel.getData();
-//    assert(mat.getRows()> kernel.getRows() && mat.getCols()>kernel.getCols());
-//    if(sizeKernel==1)
-//    {
-
-//        for(size_t i=0;i<sizeMat;++i)
-//        {
-
-//            *data[i]+=(*data[i]*kern[0]);
-//        }
-//    }
-//    else if(sizeKernel>1)
-//    {
-//        for(size_t ki=1;ki<mat.getRows()-1;++ki){
-//            for(size_t kj=1;kj<mat.getCols()-1;++kj)
-//            {
-//                auto sub = mat.getSubMatrix(ki,ki+kernel.getRows()-1,kj,kj+kernel.getCols()-1);
-//                auto dataSub = sub.getData();
-//                for(size_t i=0;i<sub.getRows();++i){
-//                    for(size_t j=0;j<sub.getCols();++j)
-//                    {
-//                        *dataSub[i+j*sub.getRows()]+=(*dataSub[i+j*sub.getRows()]) *kern.at(i+j*sub.getRows());
-//                    }
-//                }
-//            }
-//        }
-
-//    }
-//}
+    }
+}
 
 
 
